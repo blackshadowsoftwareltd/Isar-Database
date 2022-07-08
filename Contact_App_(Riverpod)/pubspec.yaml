@@ -13,6 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_riverpod:
   isar: 
   isar_flutter_libs: 
   path_provider:
@@ -25,14 +26,11 @@ dev_dependencies:
 
   isar_generator:  
   build_runner:
-
  
   flutter_lints: ^2.0.0
 
  
-flutter:
-
- 
+flutter: 
   uses-material-design: true
 
  

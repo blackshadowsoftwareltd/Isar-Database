@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:isar_test/models/database.dart';
+import 'package:isar_test/database/database.dart' show isarDB;
+import 'package:isar_test/models/contact/contact.dart'
+    show Contact, GetContactCollection;
 
-import 'controller/controller.dart' show setTextInController;
+import '../../controller/controller.dart' show setTextInController;
 import 'dialog.dart' show AddDataDialog;
-import 'models/contact/contact.dart' show Contact, GetContactCollection;
 
 class Tile extends StatelessWidget {
   const Tile({Key? key, required this.data}) : super(key: key);

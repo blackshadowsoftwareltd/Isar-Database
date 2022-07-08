@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 
-import 'controller/controller.dart';
-import 'models/contact/contact.dart' show Contact, GetContactCollection;
-import 'models/database.dart';
+import '../../controller/controller.dart'
+    show
+        addressController,
+        ageController,
+        clearController,
+        nameController,
+        phoneController;
+import '../../database/database.dart';
+import '../../models/contact/contact.dart' show Contact, GetContactCollection;
 
 class AddDataDialog extends StatelessWidget {
   const AddDataDialog({Key? key, this.data}) : super(key: key);

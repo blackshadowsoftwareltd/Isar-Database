@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:isar_test/models/contact/contact.dart';
 
-import 'models/database.dart' show isarDB;
+import '../../database/database.dart' show isarDB;
 import 'tile.dart' show Tile;
 
 class Body extends StatefulWidget {

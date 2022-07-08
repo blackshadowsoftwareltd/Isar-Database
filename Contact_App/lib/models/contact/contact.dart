@@ -3,7 +3,7 @@ import 'package:isar/isar.dart';
 part 'contact.g.dart';
 
 @Collection()
-class Contacts {
+class Contact {
   @Id()
   int? id;
 
@@ -12,4 +12,5 @@ class Contacts {
   late int age;
   late String address;
   late bool isMale;
+  late bool isStared;
 }

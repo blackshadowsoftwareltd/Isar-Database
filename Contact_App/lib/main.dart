@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:isar_test/controller/controller.dart';
+import 'package:isar/isar.dart';
+import 'package:isar_test/models/contact/contact.dart';
 import 'package:isar_test/models/database.dart';
+
+import 'dialog.dart' show AddDataDialog;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +19,18 @@ class Home extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Isar Test'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.data_saver_off),
+            onPressed: () async {
+              ///
+              ///? read database
+              final contacts = isarDB.contacts;
+              final allContacts = await contacts.where().findAll();
+              print(allContacts.length);
+            },
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -29,45 +43,5 @@ class Home extends StatelessWidget {
         child: const Icon(Icons.add),
       ),
     );
-  }
-}
-
-class AddDataDialog extends StatelessWidget {
-  const AddDataDialog({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-        child: Padding(
-      padding: const EdgeInsets.all(5),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            controller: nameController,
-            decoration: const InputDecoration(hintText: 'Name'),
-          ),
-          TextField(
-            controller: phoneController,
-            decoration: const InputDecoration(hintText: 'Phone'),
-          ),
-          TextField(
-            controller: addressController,
-            decoration: const InputDecoration(hintText: 'Address'),
-          ),
-          TextField(
-            controller: ageController,
-            decoration: const InputDecoration(hintText: 'Age'),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child:
-                ElevatedButton(onPressed: () {}, child: const Text('Create')),
-          )
-        ],
-      ),
-    ));
   }
 }

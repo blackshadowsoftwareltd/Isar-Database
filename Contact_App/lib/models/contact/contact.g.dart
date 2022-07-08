@@ -8,35 +8,42 @@ part of 'contact.dart';
 
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, unused_local_variable
 
-extension GetContactsCollection on Isar {
-  IsarCollection<Contacts> get contactss => getCollection();
+extension GetContactCollection on Isar {
+  IsarCollection<Contact> get contacts => getCollection();
 }
 
-const ContactsSchema = CollectionSchema(
-  name: 'Contacts',
+const ContactSchema = CollectionSchema(
+  name: 'Contact',
   schema:
-      '{"name":"Contacts","idName":"id","properties":[{"name":"address","type":"String"},{"name":"age","type":"Long"},{"name":"isMale","type":"Bool"},{"name":"name","type":"String"},{"name":"phone","type":"Long"}],"indexes":[],"links":[]}',
+      '{"name":"Contact","idName":"id","properties":[{"name":"address","type":"String"},{"name":"age","type":"Long"},{"name":"isMale","type":"Bool"},{"name":"isStared","type":"Bool"},{"name":"name","type":"String"},{"name":"phone","type":"Long"}],"indexes":[],"links":[]}',
   idName: 'id',
-  propertyIds: {'address': 0, 'age': 1, 'isMale': 2, 'name': 3, 'phone': 4},
+  propertyIds: {
+    'address': 0,
+    'age': 1,
+    'isMale': 2,
+    'isStared': 3,
+    'name': 4,
+    'phone': 5
+  },
   listProperties: {},
   indexIds: {},
   indexValueTypes: {},
   linkIds: {},
   backlinkLinkNames: {},
-  getId: _contactsGetId,
-  setId: _contactsSetId,
-  getLinks: _contactsGetLinks,
-  attachLinks: _contactsAttachLinks,
-  serializeNative: _contactsSerializeNative,
-  deserializeNative: _contactsDeserializeNative,
-  deserializePropNative: _contactsDeserializePropNative,
-  serializeWeb: _contactsSerializeWeb,
-  deserializeWeb: _contactsDeserializeWeb,
-  deserializePropWeb: _contactsDeserializePropWeb,
+  getId: _contactGetId,
+  setId: _contactSetId,
+  getLinks: _contactGetLinks,
+  attachLinks: _contactAttachLinks,
+  serializeNative: _contactSerializeNative,
+  deserializeNative: _contactDeserializeNative,
+  deserializePropNative: _contactDeserializePropNative,
+  serializeWeb: _contactSerializeWeb,
+  deserializeWeb: _contactDeserializeWeb,
+  deserializePropWeb: _contactDeserializePropWeb,
   version: 3,
 );
 
-int? _contactsGetId(Contacts object) {
+int? _contactGetId(Contact object) {
   if (object.id == Isar.autoIncrement) {
     return null;
   } else {
@@ -44,18 +51,18 @@ int? _contactsGetId(Contacts object) {
   }
 }
 
-void _contactsSetId(Contacts object, int id) {
+void _contactSetId(Contact object, int id) {
   object.id = id;
 }
 
-List<IsarLinkBase> _contactsGetLinks(Contacts object) {
+List<IsarLinkBase> _contactGetLinks(Contact object) {
   return [];
 }
 
-void _contactsSerializeNative(
-    IsarCollection<Contacts> collection,
+void _contactSerializeNative(
+    IsarCollection<Contact> collection,
     IsarRawObject rawObj,
-    Contacts object,
+    Contact object,
     int staticSize,
     List<int> offsets,
     AdapterAlloc alloc) {
@@ -67,11 +74,13 @@ void _contactsSerializeNative(
   final _age = value1;
   final value2 = object.isMale;
   final _isMale = value2;
-  final value3 = object.name;
-  final _name = IsarBinaryWriter.utf8Encoder.convert(value3);
+  final value3 = object.isStared;
+  final _isStared = value3;
+  final value4 = object.name;
+  final _name = IsarBinaryWriter.utf8Encoder.convert(value4);
   dynamicSize += (_name.length) as int;
-  final value4 = object.phone;
-  final _phone = value4;
+  final value5 = object.phone;
+  final _phone = value5;
   final size = staticSize + dynamicSize;
 
   rawObj.buffer = alloc(size);
@@ -81,23 +90,25 @@ void _contactsSerializeNative(
   writer.writeBytes(offsets[0], _address);
   writer.writeLong(offsets[1], _age);
   writer.writeBool(offsets[2], _isMale);
-  writer.writeBytes(offsets[3], _name);
-  writer.writeLong(offsets[4], _phone);
+  writer.writeBool(offsets[3], _isStared);
+  writer.writeBytes(offsets[4], _name);
+  writer.writeLong(offsets[5], _phone);
 }
 
-Contacts _contactsDeserializeNative(IsarCollection<Contacts> collection, int id,
+Contact _contactDeserializeNative(IsarCollection<Contact> collection, int id,
     IsarBinaryReader reader, List<int> offsets) {
-  final object = Contacts();
+  final object = Contact();
   object.address = reader.readString(offsets[0]);
   object.age = reader.readLong(offsets[1]);
   object.id = id;
   object.isMale = reader.readBool(offsets[2]);
-  object.name = reader.readString(offsets[3]);
-  object.phone = reader.readLong(offsets[4]);
+  object.isStared = reader.readBool(offsets[3]);
+  object.name = reader.readString(offsets[4]);
+  object.phone = reader.readLong(offsets[5]);
   return object;
 }
 
-P _contactsDeserializePropNative<P>(
+P _contactDeserializePropNative<P>(
     int id, IsarBinaryReader reader, int propertyIndex, int offset) {
   switch (propertyIndex) {
     case -1:
@@ -109,40 +120,44 @@ P _contactsDeserializePropNative<P>(
     case 2:
       return (reader.readBool(offset)) as P;
     case 3:
-      return (reader.readString(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 4:
+      return (reader.readString(offset)) as P;
+    case 5:
       return (reader.readLong(offset)) as P;
     default:
       throw 'Illegal propertyIndex';
   }
 }
 
-dynamic _contactsSerializeWeb(
-    IsarCollection<Contacts> collection, Contacts object) {
+dynamic _contactSerializeWeb(
+    IsarCollection<Contact> collection, Contact object) {
   final jsObj = IsarNative.newJsObject();
   IsarNative.jsObjectSet(jsObj, 'address', object.address);
   IsarNative.jsObjectSet(jsObj, 'age', object.age);
   IsarNative.jsObjectSet(jsObj, 'id', object.id);
   IsarNative.jsObjectSet(jsObj, 'isMale', object.isMale);
+  IsarNative.jsObjectSet(jsObj, 'isStared', object.isStared);
   IsarNative.jsObjectSet(jsObj, 'name', object.name);
   IsarNative.jsObjectSet(jsObj, 'phone', object.phone);
   return jsObj;
 }
 
-Contacts _contactsDeserializeWeb(
-    IsarCollection<Contacts> collection, dynamic jsObj) {
-  final object = Contacts();
+Contact _contactDeserializeWeb(
+    IsarCollection<Contact> collection, dynamic jsObj) {
+  final object = Contact();
   object.address = IsarNative.jsObjectGet(jsObj, 'address') ?? '';
   object.age = IsarNative.jsObjectGet(jsObj, 'age') ?? double.negativeInfinity;
   object.id = IsarNative.jsObjectGet(jsObj, 'id');
   object.isMale = IsarNative.jsObjectGet(jsObj, 'isMale') ?? false;
+  object.isStared = IsarNative.jsObjectGet(jsObj, 'isStared') ?? false;
   object.name = IsarNative.jsObjectGet(jsObj, 'name') ?? '';
   object.phone =
       IsarNative.jsObjectGet(jsObj, 'phone') ?? double.negativeInfinity;
   return object;
 }
 
-P _contactsDeserializePropWeb<P>(Object jsObj, String propertyName) {
+P _contactDeserializePropWeb<P>(Object jsObj, String propertyName) {
   switch (propertyName) {
     case 'address':
       return (IsarNative.jsObjectGet(jsObj, 'address') ?? '') as P;
@@ -153,6 +168,8 @@ P _contactsDeserializePropWeb<P>(Object jsObj, String propertyName) {
       return (IsarNative.jsObjectGet(jsObj, 'id')) as P;
     case 'isMale':
       return (IsarNative.jsObjectGet(jsObj, 'isMale') ?? false) as P;
+    case 'isStared':
+      return (IsarNative.jsObjectGet(jsObj, 'isStared') ?? false) as P;
     case 'name':
       return (IsarNative.jsObjectGet(jsObj, 'name') ?? '') as P;
     case 'phone':
@@ -163,16 +180,16 @@ P _contactsDeserializePropWeb<P>(Object jsObj, String propertyName) {
   }
 }
 
-void _contactsAttachLinks(IsarCollection col, int id, Contacts object) {}
+void _contactAttachLinks(IsarCollection col, int id, Contact object) {}
 
-extension ContactsQueryWhereSort on QueryBuilder<Contacts, Contacts, QWhere> {
-  QueryBuilder<Contacts, Contacts, QAfterWhere> anyId() {
+extension ContactQueryWhereSort on QueryBuilder<Contact, Contact, QWhere> {
+  QueryBuilder<Contact, Contact, QAfterWhere> anyId() {
     return addWhereClauseInternal(const IdWhereClause.any());
   }
 }
 
-extension ContactsQueryWhere on QueryBuilder<Contacts, Contacts, QWhereClause> {
-  QueryBuilder<Contacts, Contacts, QAfterWhereClause> idEqualTo(int id) {
+extension ContactQueryWhere on QueryBuilder<Contact, Contact, QWhereClause> {
+  QueryBuilder<Contact, Contact, QAfterWhereClause> idEqualTo(int id) {
     return addWhereClauseInternal(IdWhereClause.between(
       lower: id,
       includeLower: true,
@@ -181,7 +198,7 @@ extension ContactsQueryWhere on QueryBuilder<Contacts, Contacts, QWhereClause> {
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterWhereClause> idNotEqualTo(int id) {
+  QueryBuilder<Contact, Contact, QAfterWhereClause> idNotEqualTo(int id) {
     if (whereSortInternal == Sort.asc) {
       return addWhereClauseInternal(
         IdWhereClause.lessThan(upper: id, includeUpper: false),
@@ -197,21 +214,21 @@ extension ContactsQueryWhere on QueryBuilder<Contacts, Contacts, QWhereClause> {
     }
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterWhereClause> idGreaterThan(int id,
+  QueryBuilder<Contact, Contact, QAfterWhereClause> idGreaterThan(int id,
       {bool include = false}) {
     return addWhereClauseInternal(
       IdWhereClause.greaterThan(lower: id, includeLower: include),
     );
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterWhereClause> idLessThan(int id,
+  QueryBuilder<Contact, Contact, QAfterWhereClause> idLessThan(int id,
       {bool include = false}) {
     return addWhereClauseInternal(
       IdWhereClause.lessThan(upper: id, includeUpper: include),
     );
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterWhereClause> idBetween(
+  QueryBuilder<Contact, Contact, QAfterWhereClause> idBetween(
     int lowerId,
     int upperId, {
     bool includeLower = true,
@@ -226,9 +243,9 @@ extension ContactsQueryWhere on QueryBuilder<Contacts, Contacts, QWhereClause> {
   }
 }
 
-extension ContactsQueryFilter
-    on QueryBuilder<Contacts, Contacts, QFilterCondition> {
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> addressEqualTo(
+extension ContactQueryFilter
+    on QueryBuilder<Contact, Contact, QFilterCondition> {
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> addressEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -240,7 +257,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> addressGreaterThan(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> addressGreaterThan(
     String value, {
     bool caseSensitive = true,
     bool include = false,
@@ -254,7 +271,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> addressLessThan(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> addressLessThan(
     String value, {
     bool caseSensitive = true,
     bool include = false,
@@ -268,7 +285,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> addressBetween(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> addressBetween(
     String lower,
     String upper, {
     bool caseSensitive = true,
@@ -285,7 +302,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> addressStartsWith(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> addressStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -297,7 +314,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> addressEndsWith(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> addressEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -309,7 +326,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> addressContains(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> addressContains(
       String value,
       {bool caseSensitive = true}) {
     return addFilterConditionInternal(FilterCondition(
@@ -320,7 +337,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> addressMatches(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> addressMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return addFilterConditionInternal(FilterCondition(
@@ -331,8 +348,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> ageEqualTo(
-      int value) {
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> ageEqualTo(int value) {
     return addFilterConditionInternal(FilterCondition(
       type: ConditionType.eq,
       property: 'age',
@@ -340,7 +356,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> ageGreaterThan(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> ageGreaterThan(
     int value, {
     bool include = false,
   }) {
@@ -352,7 +368,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> ageLessThan(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> ageLessThan(
     int value, {
     bool include = false,
   }) {
@@ -364,7 +380,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> ageBetween(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> ageBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -379,7 +395,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> idIsNull() {
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> idIsNull() {
     return addFilterConditionInternal(FilterCondition(
       type: ConditionType.isNull,
       property: 'id',
@@ -387,7 +403,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> idEqualTo(int value) {
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> idEqualTo(int value) {
     return addFilterConditionInternal(FilterCondition(
       type: ConditionType.eq,
       property: 'id',
@@ -395,7 +411,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> idGreaterThan(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> idGreaterThan(
     int value, {
     bool include = false,
   }) {
@@ -407,7 +423,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> idLessThan(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> idLessThan(
     int value, {
     bool include = false,
   }) {
@@ -419,7 +435,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> idBetween(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> idBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -434,7 +450,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> isMaleEqualTo(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> isMaleEqualTo(
       bool value) {
     return addFilterConditionInternal(FilterCondition(
       type: ConditionType.eq,
@@ -443,7 +459,16 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> nameEqualTo(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> isStaredEqualTo(
+      bool value) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'isStared',
+      value: value,
+    ));
+  }
+
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> nameEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -455,7 +480,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> nameGreaterThan(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> nameGreaterThan(
     String value, {
     bool caseSensitive = true,
     bool include = false,
@@ -469,7 +494,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> nameLessThan(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> nameLessThan(
     String value, {
     bool caseSensitive = true,
     bool include = false,
@@ -483,7 +508,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> nameBetween(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> nameBetween(
     String lower,
     String upper, {
     bool caseSensitive = true,
@@ -500,7 +525,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> nameStartsWith(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> nameStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -512,7 +537,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> nameEndsWith(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> nameEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -524,7 +549,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> nameContains(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> nameContains(
       String value,
       {bool caseSensitive = true}) {
     return addFilterConditionInternal(FilterCondition(
@@ -535,7 +560,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> nameMatches(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> nameMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return addFilterConditionInternal(FilterCondition(
@@ -546,7 +571,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> phoneEqualTo(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> phoneEqualTo(
       int value) {
     return addFilterConditionInternal(FilterCondition(
       type: ConditionType.eq,
@@ -555,7 +580,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> phoneGreaterThan(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> phoneGreaterThan(
     int value, {
     bool include = false,
   }) {
@@ -567,7 +592,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> phoneLessThan(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> phoneLessThan(
     int value, {
     bool include = false,
   }) {
@@ -579,7 +604,7 @@ extension ContactsQueryFilter
     ));
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterFilterCondition> phoneBetween(
+  QueryBuilder<Contact, Contact, QAfterFilterCondition> phoneBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -595,163 +620,186 @@ extension ContactsQueryFilter
   }
 }
 
-extension ContactsQueryLinks
-    on QueryBuilder<Contacts, Contacts, QFilterCondition> {}
+extension ContactQueryLinks
+    on QueryBuilder<Contact, Contact, QFilterCondition> {}
 
-extension ContactsQueryWhereSortBy
-    on QueryBuilder<Contacts, Contacts, QSortBy> {
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> sortByAddress() {
+extension ContactQueryWhereSortBy on QueryBuilder<Contact, Contact, QSortBy> {
+  QueryBuilder<Contact, Contact, QAfterSortBy> sortByAddress() {
     return addSortByInternal('address', Sort.asc);
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> sortByAddressDesc() {
+  QueryBuilder<Contact, Contact, QAfterSortBy> sortByAddressDesc() {
     return addSortByInternal('address', Sort.desc);
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> sortByAge() {
+  QueryBuilder<Contact, Contact, QAfterSortBy> sortByAge() {
     return addSortByInternal('age', Sort.asc);
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> sortByAgeDesc() {
+  QueryBuilder<Contact, Contact, QAfterSortBy> sortByAgeDesc() {
     return addSortByInternal('age', Sort.desc);
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> sortById() {
+  QueryBuilder<Contact, Contact, QAfterSortBy> sortById() {
     return addSortByInternal('id', Sort.asc);
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> sortByIdDesc() {
+  QueryBuilder<Contact, Contact, QAfterSortBy> sortByIdDesc() {
     return addSortByInternal('id', Sort.desc);
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> sortByIsMale() {
+  QueryBuilder<Contact, Contact, QAfterSortBy> sortByIsMale() {
     return addSortByInternal('isMale', Sort.asc);
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> sortByIsMaleDesc() {
+  QueryBuilder<Contact, Contact, QAfterSortBy> sortByIsMaleDesc() {
     return addSortByInternal('isMale', Sort.desc);
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> sortByName() {
+  QueryBuilder<Contact, Contact, QAfterSortBy> sortByIsStared() {
+    return addSortByInternal('isStared', Sort.asc);
+  }
+
+  QueryBuilder<Contact, Contact, QAfterSortBy> sortByIsStaredDesc() {
+    return addSortByInternal('isStared', Sort.desc);
+  }
+
+  QueryBuilder<Contact, Contact, QAfterSortBy> sortByName() {
     return addSortByInternal('name', Sort.asc);
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> sortByNameDesc() {
+  QueryBuilder<Contact, Contact, QAfterSortBy> sortByNameDesc() {
     return addSortByInternal('name', Sort.desc);
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> sortByPhone() {
+  QueryBuilder<Contact, Contact, QAfterSortBy> sortByPhone() {
     return addSortByInternal('phone', Sort.asc);
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> sortByPhoneDesc() {
+  QueryBuilder<Contact, Contact, QAfterSortBy> sortByPhoneDesc() {
     return addSortByInternal('phone', Sort.desc);
   }
 }
 
-extension ContactsQueryWhereSortThenBy
-    on QueryBuilder<Contacts, Contacts, QSortThenBy> {
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> thenByAddress() {
+extension ContactQueryWhereSortThenBy
+    on QueryBuilder<Contact, Contact, QSortThenBy> {
+  QueryBuilder<Contact, Contact, QAfterSortBy> thenByAddress() {
     return addSortByInternal('address', Sort.asc);
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> thenByAddressDesc() {
+  QueryBuilder<Contact, Contact, QAfterSortBy> thenByAddressDesc() {
     return addSortByInternal('address', Sort.desc);
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> thenByAge() {
+  QueryBuilder<Contact, Contact, QAfterSortBy> thenByAge() {
     return addSortByInternal('age', Sort.asc);
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> thenByAgeDesc() {
+  QueryBuilder<Contact, Contact, QAfterSortBy> thenByAgeDesc() {
     return addSortByInternal('age', Sort.desc);
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> thenById() {
+  QueryBuilder<Contact, Contact, QAfterSortBy> thenById() {
     return addSortByInternal('id', Sort.asc);
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> thenByIdDesc() {
+  QueryBuilder<Contact, Contact, QAfterSortBy> thenByIdDesc() {
     return addSortByInternal('id', Sort.desc);
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> thenByIsMale() {
+  QueryBuilder<Contact, Contact, QAfterSortBy> thenByIsMale() {
     return addSortByInternal('isMale', Sort.asc);
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> thenByIsMaleDesc() {
+  QueryBuilder<Contact, Contact, QAfterSortBy> thenByIsMaleDesc() {
     return addSortByInternal('isMale', Sort.desc);
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> thenByName() {
+  QueryBuilder<Contact, Contact, QAfterSortBy> thenByIsStared() {
+    return addSortByInternal('isStared', Sort.asc);
+  }
+
+  QueryBuilder<Contact, Contact, QAfterSortBy> thenByIsStaredDesc() {
+    return addSortByInternal('isStared', Sort.desc);
+  }
+
+  QueryBuilder<Contact, Contact, QAfterSortBy> thenByName() {
     return addSortByInternal('name', Sort.asc);
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> thenByNameDesc() {
+  QueryBuilder<Contact, Contact, QAfterSortBy> thenByNameDesc() {
     return addSortByInternal('name', Sort.desc);
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> thenByPhone() {
+  QueryBuilder<Contact, Contact, QAfterSortBy> thenByPhone() {
     return addSortByInternal('phone', Sort.asc);
   }
 
-  QueryBuilder<Contacts, Contacts, QAfterSortBy> thenByPhoneDesc() {
+  QueryBuilder<Contact, Contact, QAfterSortBy> thenByPhoneDesc() {
     return addSortByInternal('phone', Sort.desc);
   }
 }
 
-extension ContactsQueryWhereDistinct
-    on QueryBuilder<Contacts, Contacts, QDistinct> {
-  QueryBuilder<Contacts, Contacts, QDistinct> distinctByAddress(
+extension ContactQueryWhereDistinct
+    on QueryBuilder<Contact, Contact, QDistinct> {
+  QueryBuilder<Contact, Contact, QDistinct> distinctByAddress(
       {bool caseSensitive = true}) {
     return addDistinctByInternal('address', caseSensitive: caseSensitive);
   }
 
-  QueryBuilder<Contacts, Contacts, QDistinct> distinctByAge() {
+  QueryBuilder<Contact, Contact, QDistinct> distinctByAge() {
     return addDistinctByInternal('age');
   }
 
-  QueryBuilder<Contacts, Contacts, QDistinct> distinctById() {
+  QueryBuilder<Contact, Contact, QDistinct> distinctById() {
     return addDistinctByInternal('id');
   }
 
-  QueryBuilder<Contacts, Contacts, QDistinct> distinctByIsMale() {
+  QueryBuilder<Contact, Contact, QDistinct> distinctByIsMale() {
     return addDistinctByInternal('isMale');
   }
 
-  QueryBuilder<Contacts, Contacts, QDistinct> distinctByName(
+  QueryBuilder<Contact, Contact, QDistinct> distinctByIsStared() {
+    return addDistinctByInternal('isStared');
+  }
+
+  QueryBuilder<Contact, Contact, QDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return addDistinctByInternal('name', caseSensitive: caseSensitive);
   }
 
-  QueryBuilder<Contacts, Contacts, QDistinct> distinctByPhone() {
+  QueryBuilder<Contact, Contact, QDistinct> distinctByPhone() {
     return addDistinctByInternal('phone');
   }
 }
 
-extension ContactsQueryProperty
-    on QueryBuilder<Contacts, Contacts, QQueryProperty> {
-  QueryBuilder<Contacts, String, QQueryOperations> addressProperty() {
+extension ContactQueryProperty
+    on QueryBuilder<Contact, Contact, QQueryProperty> {
+  QueryBuilder<Contact, String, QQueryOperations> addressProperty() {
     return addPropertyNameInternal('address');
   }
 
-  QueryBuilder<Contacts, int, QQueryOperations> ageProperty() {
+  QueryBuilder<Contact, int, QQueryOperations> ageProperty() {
     return addPropertyNameInternal('age');
   }
 
-  QueryBuilder<Contacts, int?, QQueryOperations> idProperty() {
+  QueryBuilder<Contact, int?, QQueryOperations> idProperty() {
     return addPropertyNameInternal('id');
   }
 
-  QueryBuilder<Contacts, bool, QQueryOperations> isMaleProperty() {
+  QueryBuilder<Contact, bool, QQueryOperations> isMaleProperty() {
     return addPropertyNameInternal('isMale');
   }
 
-  QueryBuilder<Contacts, String, QQueryOperations> nameProperty() {
+  QueryBuilder<Contact, bool, QQueryOperations> isStaredProperty() {
+    return addPropertyNameInternal('isStared');
+  }
+
+  QueryBuilder<Contact, String, QQueryOperations> nameProperty() {
     return addPropertyNameInternal('name');
   }
 
-  QueryBuilder<Contacts, int, QQueryOperations> phoneProperty() {
+  QueryBuilder<Contact, int, QQueryOperations> phoneProperty() {
     return addPropertyNameInternal('phone');
   }
 }

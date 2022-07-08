@@ -3,6 +3,8 @@ import 'package:isar/isar.dart';
 import 'package:isar_test/models/contact/contact.dart';
 import 'package:path_provider/path_provider.dart';
 
+late Isar isarDB;
+
 Future<void> isarInit() async {
   final dir = await getApplicationSupportDirectory();
   isarDB = await Isar.open(
@@ -11,5 +13,3 @@ Future<void> isarInit() async {
     inspector: !kReleaseMode,
   );
 }
-
-late Isar isarDB;

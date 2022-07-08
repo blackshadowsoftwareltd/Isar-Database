@@ -14,9 +14,23 @@ Future<void> main() async {
   ));
 }
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  @override
+  void initState() {
+    super.initState();
+
+    ///? watching a collection
+    streamDatabase();
+  }
+
+  List<Contact> list = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,13 +46,13 @@ class Home extends StatelessWidget {
               final allContacts = await contacts.where().findAll();
               for (var x in allContacts) {
                 print(x.toString());
-                // print('name : ${x.name} phone ${x.phone}');
               }
               print('length ${allContacts.length}');
             },
           ),
         ],
       ),
+      body: Text(list.length.toString()),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await showDialog(
@@ -50,5 +64,23 @@ class Home extends StatelessWidget {
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  ///? watching a collection
+  Future<void> streamDatabase() async {
+    final contacts = isarDB.contacts;
+    await contacts.where().findAll().then((value) {
+      list.clear();
+      list = value;
+      setState(() {});
+    });
+    Stream<void> stream = isarDB.contacts.watchLazy();
+    stream.listen((event) async {
+      await contacts.where().findAll().then((value) {
+        list.clear();
+        list = value;
+        setState(() {});
+      });
+    });
   }
 }

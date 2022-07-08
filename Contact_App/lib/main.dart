@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
+import 'package:isar_test/body.dart';
+import 'package:isar_test/controller/controller.dart';
 import 'package:isar_test/models/contact/contact.dart';
 import 'package:isar_test/models/database.dart';
 
@@ -14,23 +16,9 @@ Future<void> main() async {
   ));
 }
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
 
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  @override
-  void initState() {
-    super.initState();
-
-    ///? watching a collection
-    streamDatabase();
-  }
-
-  List<Contact> list = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,9 +40,17 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: Text(list.length.toString()),
+
+      ///? body
+      body: const Body(),
+
+      ///? create button
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          ///? clear all controller
+          clearController();
+
+          ///? show dialog for insert data & save to database
           await showDialog(
               context: context,
               builder: (context) {
@@ -64,23 +60,5 @@ class _HomeState extends State<Home> {
         child: const Icon(Icons.add),
       ),
     );
-  }
-
-  ///? watching a collection
-  Future<void> streamDatabase() async {
-    final contacts = isarDB.contacts;
-    await contacts.where().findAll().then((value) {
-      list.clear();
-      list = value;
-      setState(() {});
-    });
-    Stream<void> stream = isarDB.contacts.watchLazy();
-    stream.listen((event) async {
-      await contacts.where().findAll().then((value) {
-        list.clear();
-        list = value;
-        setState(() {});
-      });
-    });
   }
 }

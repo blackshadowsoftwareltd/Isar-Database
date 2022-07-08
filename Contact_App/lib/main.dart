@@ -8,7 +8,10 @@ import 'dialog.dart' show AddDataDialog;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await isarInit();
-  runApp(const MaterialApp(home: Home()));
+  runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: Home(),
+  ));
 }
 
 class Home extends StatelessWidget {
@@ -27,7 +30,11 @@ class Home extends StatelessWidget {
               ///? read database
               final contacts = isarDB.contacts;
               final allContacts = await contacts.where().findAll();
-              print(allContacts.length);
+              for (var x in allContacts) {
+                print(x.toString());
+                // print('name : ${x.name} phone ${x.phone}');
+              }
+              print('length ${allContacts.length}');
             },
           ),
         ],

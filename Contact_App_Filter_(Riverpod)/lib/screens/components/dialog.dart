@@ -44,6 +44,7 @@ class AddDataDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
+                    style: ElevatedButton.styleFrom(primary: Colors.red),
                     child: const Text('Close'),
                     onPressed: () => Navigator.pop(context)),
 

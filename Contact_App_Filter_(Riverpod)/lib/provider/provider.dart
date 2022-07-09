@@ -33,3 +33,4 @@ class ContactListNotifier extends ChangeNotifier {
 
 final contactList =
     ChangeNotifierProvider<ContactListNotifier>((ref) => ContactListNotifier());
+final filterByStarred = StateProvider((ref) => false);

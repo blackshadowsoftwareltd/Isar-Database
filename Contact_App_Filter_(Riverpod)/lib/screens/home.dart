@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
 import 'package:isar_test/controller/controller.dart' show clearController;
-import 'package:isar_test/models/contact/contact.dart';
-import 'package:isar_test/database/database.dart' show isarDB;
+import 'package:isar_test/screens/components/appbar.dart' show HomeAppBar;
 
 import 'components/body.dart' show Body;
 import 'components/dialog.dart' show AddDataDialog;
@@ -14,25 +12,8 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blueGrey.shade900,
-      appBar: AppBar(
-        backgroundColor: Colors.blueGrey.shade800,
-        title: const Text('Isar Contact App'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.data_saver_off),
-            onPressed: () async {
-              ///
-              ///? read database
-              final contacts = isarDB.contacts;
-              final allContacts = await contacts.where().findAll();
-              for (var x in allContacts) {
-                print(x.toString());
-              }
-              print('length ${allContacts.length}');
-            },
-          ),
-        ],
-      ),
+      appBar: const PreferredSize(
+          preferredSize: Size(double.maxFinite, 60), child: HomeAppBar()),
 
       ///? body
       body: const Body(),
@@ -55,3 +36,4 @@ class Home extends StatelessWidget {
     );
   }
 }
+  const white = Colors.white;

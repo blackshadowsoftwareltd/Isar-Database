@@ -4,6 +4,7 @@ import 'package:isar_test/models/contact/contact.dart'
     show Contact, GetContactCollection;
 
 import '../../controller/controller.dart' show setTextInController;
+import '../home.dart' show white;
 import 'dialog.dart' show AddDataDialog;
 
 class Tile extends StatelessWidget {
@@ -12,7 +13,6 @@ class Tile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const white = Colors.white;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
       padding: const EdgeInsets.all(5),
@@ -93,48 +93,5 @@ class Tile extends StatelessWidget {
         ])
       ]),
     );
-
-    // ListTile(
-
-    //   leading:
-
-    //   ///? title
-    //   title: Text(data.name),
-
-    //   ///? subtitle
-    //   subtitle: Text(data.phone.toString()),
-
-    //   ///? update & delete
-    //   trailing: Row(
-    //     mainAxisSize: MainAxisSize.min,
-    //     children: [
-    //       ///? update
-    //       IconButton(
-    //           onPressed: () async {
-    //             setTextInController(
-    //                 name: data.name,
-    //                 phone: data.phone.toString(),
-    //                 address: data.address,
-    //                 age: data.age.toString());
-    //             await showDialog(
-    //               context: context,
-    //               builder: (context) {
-    //                 return AddDataDialog(data: data);
-    //               },
-    //             );
-    //           },
-    //           icon: const Icon(Icons.edit_note_rounded)),
-
-    //       ///? delete
-    //       IconButton(
-    //           onPressed: () async {
-    //             await isarDB.writeTxn((isar) async {
-    //               await isar.contacts.delete(data.id!);
-    //             });
-    //           },
-    //           icon: const Icon(Icons.delete))
-    //     ],
-    //   ),
-    // );
   }
 }

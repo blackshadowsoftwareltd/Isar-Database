@@ -13,8 +13,10 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey.shade900,
       appBar: AppBar(
-        title: const Text('Isar Test'),
+        backgroundColor: Colors.blueGrey.shade800,
+        title: const Text('Isar Contact App'),
         actions: [
           IconButton(
             icon: const Icon(Icons.data_saver_off),

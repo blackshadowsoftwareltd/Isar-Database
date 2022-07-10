@@ -19,3 +19,5 @@ class Contact {
     return 'Contact{id: $id, name: $name, phone: $phone, age: $age, address: $address, isMale: $isMale, isStared: $isStared}';
   }
 }
+
+// flutter pub run build_runner build --delete-conflicting-outputs 

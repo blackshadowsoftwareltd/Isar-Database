@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:isar_test/helper/enums.dart' show Relationship, Gender;
+import 'package:isar_test/models/user/user.dart';
 
-import '../database/database.dart' show isarDB;
-import 'controller.dart';
-import '../models/contact/contact.dart' show Contact, GetContactCollection;
+import '../../controller/controller.dart'
+    show
+        addressController,
+        ageController,
+        clearController,
+        nameController,
+        phoneController;
+import '../../database/database.dart';
+import '../../models/contact/contact.dart' show Contact, GetContactCollection;
 
 class AddDataDialog extends StatelessWidget {
   const AddDataDialog({Key? key, this.data}) : super(key: key);
@@ -38,6 +46,7 @@ class AddDataDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
+                    style: ElevatedButton.styleFrom(primary: Colors.red),
                     child: const Text('Close'),
                     onPressed: () => Navigator.pop(context)),
 
@@ -46,13 +55,18 @@ class AddDataDialog extends StatelessWidget {
                   child: Text(data != null ? 'Update' : 'Create'),
                   onPressed: () async {
                     if (data == null) {
-                      final newContact = Contact()
-                        ..name = nameController.text
-                        ..phone = int.parse(phoneController.text)
+                      final time = DateTime.now();
+                      final newUser = User()
+                        ..fullName = nameController.text
                         ..address = addressController.text
-                        ..age = int.parse(ageController.text)
-                        ..isMale = true
-                        ..isStared = false;
+                        ..relationship = Relationship.single
+                        ..gender = Gender.male;
+                      final newContact = Contact()
+                        ..phone = int.parse(phoneController.text)
+                        ..isStared = false
+                        ..createdAt = time
+                        ..updatedAt = time
+                        ..users.value = newUser;
 
                       ///? add new contact to database
 
@@ -70,10 +84,13 @@ class AddDataDialog extends StatelessWidget {
                           await isarDB.contacts.get(data!.id!);
                       updateContact?.isStared = true;
                       await isarDB.writeTxn((isar) async {
-                        updateContact?.name = nameController.text;
+                        updateContact?.users.value!.fullName =
+                            nameController.text;
                         updateContact?.phone = int.parse(phoneController.text);
-                        updateContact?.address = addressController.text;
-                        updateContact?.age = int.parse(ageController.text);
+                        updateContact?.users.value!.address =
+                            addressController.text;
+                        updateContact?.users.value!.age =
+                            int.parse(ageController.text);
                         await isar.contacts.put(updateContact!);
                       }).then((value) {
                         clearController();

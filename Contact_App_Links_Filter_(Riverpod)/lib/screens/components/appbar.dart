@@ -21,7 +21,7 @@ class HomeAppBar extends ConsumerWidget {
         IconButton(
           icon: const Icon(Icons.filter_alt_outlined),
           onPressed: () async {
-          await  initAll(ref);
+            await initAll(ref);
             await showDialog(
               context: context,
               builder: (context) {
@@ -42,6 +42,7 @@ class HomeAppBar extends ConsumerWidget {
             final allContacts = await contacts.where().findAll();
             for (var x in allContacts) {
               print(x.toString());
+              print('${x.users.value?.fullName}');
             }
             print('length ${allContacts.length}');
           },

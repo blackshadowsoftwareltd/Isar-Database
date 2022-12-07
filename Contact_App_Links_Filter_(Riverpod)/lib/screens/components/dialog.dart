@@ -60,7 +60,8 @@ class AddDataDialog extends StatelessWidget {
                         ..fullName = nameController.text
                         ..address = addressController.text
                         ..relationship = Relationship.single
-                        ..gender = Gender.male;
+                        ..gender = Gender.male
+                        ..age = 5;
                       final newContact = Contact()
                         ..phone = int.parse(phoneController.text)
                         ..isStared = false
@@ -71,8 +72,10 @@ class AddDataDialog extends StatelessWidget {
                       ///? add new contact to database
 
                       await isarDB.writeTxn((isar) async {
-                        await isar.contacts.put(newContact);
-                      }).then((value) {
+                        await isar.users.put(newUser);
+                        await isar.contacts.put(newContact, saveLinks: true);
+                      }).then((value) async {
+                        await newContact.users.load();
                         clearController();
                         Navigator.pop(context);
                       });
@@ -84,12 +87,12 @@ class AddDataDialog extends StatelessWidget {
                           await isarDB.contacts.get(data!.id!);
                       updateContact?.isStared = true;
                       await isarDB.writeTxn((isar) async {
-                        updateContact?.users.value!.fullName =
+                        updateContact?.users.value?.fullName =
                             nameController.text;
                         updateContact?.phone = int.parse(phoneController.text);
-                        updateContact?.users.value!.address =
+                        updateContact?.users.value?.address =
                             addressController.text;
-                        updateContact?.users.value!.age =
+                        updateContact?.users.value?.age =
                             int.parse(ageController.text);
                         await isar.contacts.put(updateContact!);
                       }).then((value) {

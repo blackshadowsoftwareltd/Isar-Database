@@ -15,7 +15,7 @@ dependencies:
   isar: 
   isar_flutter_libs: 
   path_provider:    
- 
+  path:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:

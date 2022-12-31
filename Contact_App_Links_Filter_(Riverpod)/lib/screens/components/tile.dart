@@ -69,10 +69,10 @@ class Tile extends StatelessWidget {
           IconButton(
               onPressed: () async {
                 setTextInController(
-                    name: data.users.value!.fullName,
+                    name: data.users.value?.fullName ?? '',
                     phone: data.phone.toString(),
-                    address: data.users.value!.address,
-                    age: data.users.value!.age.toString());
+                    address: data.users.value?.address ?? '',
+                    age: data.users.value?.age.toString());
                 await showDialog(
                   context: context,
                   builder: (context) {
